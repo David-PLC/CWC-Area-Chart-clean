@@ -1,10 +1,12 @@
 # CWC-Area-Chart-clean
 
+<img src="https://apexcharts.com/wp-content/themes/apexcharts/img/apexcharts-logo-white-trimmed.svg" alt="Apex Chart"/>
+
 Custom Web Control made for WinCC Unified
 
 ### 1. CONTENT
 
-HTML area chart element done with ApexChart
+HTML area chart element done with ApexChart with only series and no labels or toolbars
 
 ### 2. INTERFACE
 
