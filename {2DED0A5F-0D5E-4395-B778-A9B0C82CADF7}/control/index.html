@@ -1,0 +1,201 @@
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Apex Chart</title>
+  <link rel="icon" href="icon.png" />
+
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/apexcharts.min.js"></script>
+
+  <script src="webcc.min.js"></script>
+  <script src="unified.interface.js"></script>
+  <link href="lib/style.css" rel="stylesheet">
+  <script>
+    var production = true;
+
+    function init(result) {
+      if (result) {
+        unifiedInterfaceInit();
+        chartInit(WebCC.Properties);
+      } else {
+        console.log('CWC_AreaChartClean: Init without result.');
+      }
+    }
+
+    window.onload = function () {
+      if (!production) {
+        WebCC.Properties = {
+          Data: "[10, 50, 20, 70, 30, 80, 40, 90, 80, 100]",
+          SeriesColor: 4279491983,
+          BackgroundColor: 4294967295,
+          LineType: 'Smooth',
+          ChartType: 'Area'
+        };
+        init(true);
+      }
+      if (production) {
+        WebCC.start(init, UnifiedInterface.HostListener, _extensions, _timeout);
+      }
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <div id="content">
+    <div id="chart">
+    </div>
+  </div>
+
+
+  <script>
+
+    var chartInit = function (props) {
+
+      // load and parse Data
+      if (props.hasOwnProperty('Data') && props.Data != null) {
+        if (typeof props.Data === 'string') {
+          console.log('CWC_AreaChartClean: props.Data:' + props.Data);
+          propsData = JSON.parse(props.Data);
+        } else if (Array.isArray(props.Data)) {
+          propsData = props.Data;
+        } else {
+          console.log('CWC_AreaChartClean: WRONG FORMAT: Data');
+        }
+      } else {
+        return;
+      }
+
+      // load and parse SeriesColor
+      if (props.hasOwnProperty('SeriesColor') && props.SeriesColor != null) {
+        propsSeriesColor = toColor(props.SeriesColor)
+      }
+
+      // load and parse BackgroundColor
+      if (props.hasOwnProperty('BackgroundColor') && props.BackgroundColor != null) {
+        propsBackgroundColor = toColor(props.BackgroundColor)
+      }
+
+      // load and parse LineType
+      if (props.hasOwnProperty('LineType') && props.LineType != null) {
+        propsLineType = props.LineType.toLowerCase();
+      }
+
+      // load and parse ChartType
+      if (props.hasOwnProperty('ChartType') && props.ChartType != null) {
+        propsChartType = props.ChartType.toLowerCase();
+      }
+
+      if (chart.renderDone) {
+        update(propsData);
+      } else {
+        let options = creteOptions(propsData[0], propsSeriesColor, propsBackgroundColor, propsChartType, propsLineType);
+        chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render().then(() => chart.renderDone = true);
+      }
+
+    }
+
+    function toColor(num) {
+      let hexCol = num.toString(16);
+      return "#" + hexCol.slice(2);
+    }
+
+    function update(data) {
+      if (data != null) {
+        if (typeof data === 'string') {
+          console.log('CWC_AreaChartCleana:' + data);
+          propsData = JSON.parse(data);
+        } else if (Array.isArray(data)) {
+          propsData = data;
+        } else {
+          console.log('CWC_AreaChartCleanNG FORMAT: data');
+        }
+      } else {
+        return;
+      }
+
+      let xSeries = [];
+      let xData = {};
+      xData['data'] = propsData[0];
+      xSeries.push(xData);
+      console.log(JSON.stringify(xSeries));
+      chart.updateSeries(xSeries, true);
+    }
+
+    function creteOptions(xData, xSeriesColor, xpropsBackgroundColor, chartType, xLineType) {
+      var xoptions = {
+        series: [{
+          data: xData,
+          color: xSeriesColor
+        }],
+        chart: {
+          type: chartType,
+          width: '100%',
+          height: '100%',
+          zoom: {
+            enabled: true
+          },
+          toolbar: {
+            show: false,
+          },
+          sparkline: {
+            enabled: true,
+          },
+          background: xpropsBackgroundColor
+        },
+        zoom: {
+          enabled: true,
+        },
+        grid: {
+          show: false,
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: xLineType
+        },
+        labels: [],
+        xaxis: {
+          show: false,
+          labels: {
+            show: false
+          },
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          }
+        },
+        yaxis: {
+          show: false,
+          labels: {
+            show: false
+          },
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          }
+        },
+        tooltip: {
+          enabled: false,
+        },
+        legend: {
+          show: false,
+        }
+      };
+      return xoptions
+    }
+
+  </script>
+
+</body>
+
+</html>

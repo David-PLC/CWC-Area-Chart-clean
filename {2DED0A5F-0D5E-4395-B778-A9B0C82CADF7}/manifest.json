@@ -1,0 +1,67 @@
+{
+    "mver": "1.2.0",
+    "control": {
+        "identity": {
+            "name": "AreaChart_clean",
+            "version": "2",
+            "displayname": "Area Chart clean",
+            "icon": "./control/icon.png",
+            "type": "guid://2DED0A5F-0D5E-4395-B778-A9B0C82CADF7",
+            "start": "./control/index.html"
+        },
+        "enviroment": {
+            "extensions": {
+                "HMI": {
+                    "mandatory": true,
+                    "version": "1.0"
+                }
+            }
+        },
+        "contracts": {
+            "api": {
+                "methods": {},
+                "events": {},
+                "properties": {
+                    "Data": {
+                        "type": "string",
+                        "default": "[]"
+                    },
+                    "SeriesColor": {
+                        "$ref": "http://tia.siemens.com/wincc-unified/types/s/color",
+                        "default": 4279491983
+                    },
+                    "BackgroundColor": {
+                        "$ref": "http://tia.siemens.com/wincc-unified/types/s/color",
+                        "default": 4294967295
+                    },
+                    "LineType": {
+                        "$ref": "#/control/types/LineTipes"
+                    },
+                    "ChartType": {
+                        "$ref": "#/control/types/ChartType"
+                    }
+                }
+            }
+        },
+        "types": {
+            "LineTipes": {
+				"type": "string",
+				"enum": [
+					"Smooth",
+					"Straight",
+					"Stepline"
+				],
+				"default": "Smooth"
+			},
+            "ChartType": {
+				"type": "string",
+				"enum": [
+					"Line",
+					"Area",
+					"Bar"
+				],
+				"default": "Area"
+			}
+        }
+    }
+}
